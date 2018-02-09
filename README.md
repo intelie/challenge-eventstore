@@ -28,14 +28,17 @@ We expect you to:
 * Justify design choices, arguing about costs 
   and benefits involved. You may write those as comments 
   inline or, if you wish, provide a separate document 
-  summarizing those choices.
-* Write all code and documentation in english
+  summarizing those choices;
+* Write all code and documentation in english.
   
 You may use external libraries, but their use has to be 
 properly justified as well.
  
 This challenge is intentionally simple, we expect a simple,
-elegant, and polished solution.
+elegant, and polished solution. There is no unique solution to this challenge. 
+The intent is to evaluate candidate's coding proficiency and familiarity with 
+tools and best practices.
+
 
 ## Solve this challenge
 
@@ -44,8 +47,6 @@ send us a link with your implementation. Alternatively, if you do not want to ha
 your profile (we totally get it), send us a 
 [git patch file](https://www.devroom.io/2009/10/26/how-to-create-and-apply-a-patch-with-git/) 
 with your changes.
-
-There is no unique solution to this challenge. The intent is to evaluate candidate's coding proficiency and familiarity with tools and best practices.
 
 If you are already in the hiring process, you may send it to 
  whoever is your contact at Intelie. If you wish to apply for a job at 
