@@ -1,5 +1,6 @@
 package gma.intelie.challanges;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -79,18 +80,29 @@ public class EventIteratorGMATest {
 			
 	}
 	
-	@Test(expected=IllegalStateException.class)
+	@Test
 	public void current_() {
 		
+		boolean hasNext=false;
+
 		List<Event> lstEvent=new ArrayList<>(); 
-		lstEvent.add( new Event("EVE-ADD",1L));
-		lstEvent.add( new Event("EVE-ADD",2L));
-		lstEvent.add( new Event("EVE-ADD",3L));
+		lstEvent.add( new Event("EVE-ADD",196701L));
+		lstEvent.add( new Event("EVE-ADD",196702L));
+		lstEvent.add( new Event("EVE-ADD",196703L));
 		
 		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
+			
 		
-		eventIteratorGMA.moveNext();
-		Event e=eventIteratorGMA.current();
+		hasNext=eventIteratorGMA.moveNext();
+		assertTrue(( eventIteratorGMA.current().timestamp()==196701L) && (hasNext) );
+		
+		hasNext=eventIteratorGMA.moveNext();
+		assertTrue(( eventIteratorGMA.current().timestamp()==196702L) && (hasNext) );
+		
+		hasNext=eventIteratorGMA.moveNext();
+		assertTrue(( eventIteratorGMA.current().timestamp()==196703L) && (!hasNext) );
+		
+		
 			
 	}
 
