@@ -34,6 +34,15 @@ public class EventIteratorGMATest {
 		
 		
 	}
+	@Test
+	public void  moveNext_emptyList_returnFalse() {
+		List<Event> lstEvent=new ArrayList<>(); 
+	   
+		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
+				
+		
+		assertFalse(eventIteratorGMA.moveNext());
+	}
 	
 	@Test
 	public void  moveNext_notEnd_returnTrue() {
@@ -49,18 +58,10 @@ public class EventIteratorGMATest {
 	//	assertFalse(eventIteratorGMA.moveNext());
 		
 	}
-	@Test
-	public void  moveNext_emptyList_returnFalse() {
-		List<Event> lstEvent=new ArrayList<>(); 
-	   
-		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
-				
-		
-		assertFalse(eventIteratorGMA.moveNext());
-	}
+	
 
 	@Test(expected=IllegalStateException.class)
-	public void current_notCallNext_returnIllegalStateException() {
+	public void current_moveNextWasNeverCalled_returnIllegalStateException() {
 		
 		List<Event> lstEvent=new ArrayList<>(); 
 		lstEvent.add( new Event("EVE-ADD",1L));
@@ -81,6 +82,24 @@ public class EventIteratorGMATest {
 		Event e=eventIteratorGMA.current();
 			
 	}
+	
+	@Test(expected=IllegalStateException.class)
+	public void current_moveNextLastResultWasFalse_returnIllegalStateException() {
+		List<Event> lstEvent=new ArrayList<>(); 
+		lstEvent.add( new Event("EVE-ADD",196701L));
+	 
+		
+		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
+		
+		eventIteratorGMA.moveNext();
+		eventIteratorGMA.current();
+		
+		eventIteratorGMA.moveNext();
+		eventIteratorGMA.current();
+		 
+		
+	}
+	
 	
 	@Test
 	public void current_sucess_returnCurrentEvent() {
@@ -124,5 +143,32 @@ public class EventIteratorGMATest {
 		eventIteratorGMA.moveNext();
 		
 		eventIteratorGMA.remove();
+	}
+	
+	@Test
+	public void remove_sucesso_() {
+		List<Event> lstEvent=new ArrayList<>(); 
+		lstEvent.add( new Event("EVE-ADD",196701L));
+		lstEvent.add( new Event("EVE-ADD",196702L));
+		lstEvent.add( new Event("EVE-ADD",196703L));
+		System.out.println("SIZE===>"+lstEvent.size());
+		
+		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
+		eventIteratorGMA.moveNext();
+		eventIteratorGMA.remove();
+		while(eventIteratorGMA.moveNext()) {
+			
+			System.out.println("===>"+eventIteratorGMA.current().timestamp());
+		}
+		System.out.println("===>"+eventIteratorGMA.current().timestamp());
+		System.out.println("---------------------------------------------");
+		System.out.println("SIZE===>"+lstEvent.size());
+		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
+		while(eventIteratorGMA.moveNext()) {
+			
+			System.out.println("===>"+eventIteratorGMA.current().timestamp());
+		}
+		System.out.println("===>"+eventIteratorGMA.current().timestamp());
+		
 	}
 }
