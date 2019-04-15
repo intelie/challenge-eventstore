@@ -50,6 +50,11 @@ public class EventIteratorGMA implements EventIterator {
 	@Override
 	public void remove() {
 		
+		if(( currentEvent==null) || (!eventIterator.hasNext())) {
+			throw new IllegalStateException();
+		}
+		
+		
 		eventIterator.remove();
 
 	}

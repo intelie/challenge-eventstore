@@ -22,8 +22,8 @@ public class EventIteratorGMATest {
 	}
 	
 	
-	@Test
-	public void  moveNext_semMaisItens() {
+	@Test 
+	public void  moveNext_iteratorHasReachedTheEnd_returnFalse() {
 		List<Event> lstEvent=new ArrayList<>(); 
 		lstEvent.add( new Event("EVE-ADD",1L));
 		
@@ -36,19 +36,21 @@ public class EventIteratorGMATest {
 	}
 	
 	@Test
-	public void  moveNext_comMaisItens() {
+	public void  moveNext_notEnd_returnTrue() {
 		List<Event> lstEvent=new ArrayList<>(); 
 		lstEvent.add( new Event("EVE-ADD",1L));
 		lstEvent.add( new Event("EVE-ADD",2L));
+		lstEvent.add( new Event("EVE-ADD",3L));
 	   
 		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
 				
 		assertTrue(eventIteratorGMA.moveNext());
-		assertFalse(eventIteratorGMA.moveNext());
+		assertTrue(eventIteratorGMA.moveNext());
+	//	assertFalse(eventIteratorGMA.moveNext());
 		
 	}
 	@Test
-	public void  moveNext_semItens() {
+	public void  moveNext_emptyList_returnFalse() {
 		List<Event> lstEvent=new ArrayList<>(); 
 	   
 		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
@@ -58,7 +60,7 @@ public class EventIteratorGMATest {
 	}
 
 	@Test(expected=IllegalStateException.class)
-	public void current_notCallNext_should_illegalStateException() {
+	public void current_notCallNext_returnIllegalStateException() {
 		
 		List<Event> lstEvent=new ArrayList<>(); 
 		lstEvent.add( new Event("EVE-ADD",1L));
@@ -70,7 +72,7 @@ public class EventIteratorGMATest {
 	}
 	
 	@Test(expected=IllegalStateException.class)
-	public void current_empty_should_illegalStateException() {
+	public void current_emptyList_returnIllegalStateException() {
 		
 		List<Event> lstEvent=new ArrayList<>(); 
 		
@@ -81,7 +83,7 @@ public class EventIteratorGMATest {
 	}
 	
 	@Test
-	public void current_() {
+	public void current_sucess_returnCurrentEvent() {
 		
 		boolean hasNext=false;
 
@@ -101,10 +103,26 @@ public class EventIteratorGMATest {
 		
 		hasNext=eventIteratorGMA.moveNext();
 		assertTrue(( eventIteratorGMA.current().timestamp()==196703L) && (!hasNext) );
-		
-		
 			
 	}
 
+	@Test(expected=IllegalStateException.class)
+	public void  remove_notCallNext_returnIllegalStateException() {
+		List<Event> lstEvent=new ArrayList<>(); 
+				
+		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
+		
+		eventIteratorGMA.remove();
+	}
 
+	@Test(expected=IllegalStateException.class)
+	public void  remove_withEnd_returnIllegalStateException() {
+		List<Event> lstEvent=new ArrayList<>();
+		lstEvent.add( new Event("EVE-ADD",196701L));
+		
+		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
+		eventIteratorGMA.moveNext();
+		
+		eventIteratorGMA.remove();
+	}
 }
