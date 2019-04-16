@@ -29,6 +29,8 @@ public class EventIteratorGMATest {
 		
 	   
 		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
+		
+		eventIteratorGMA.moveNext();
 				
 		assertTrue(!eventIteratorGMA.moveNext());
 		
@@ -121,7 +123,10 @@ public class EventIteratorGMATest {
 		assertTrue(( eventIteratorGMA.current().timestamp()==196702L) && (hasNext) );
 		
 		hasNext=eventIteratorGMA.moveNext();
-		assertTrue(( eventIteratorGMA.current().timestamp()==196703L) && (!hasNext) );
+		assertTrue(( eventIteratorGMA.current().timestamp()==196703L) && (hasNext) );
+		
+		hasNext=eventIteratorGMA.moveNext();
+		assertTrue(!hasNext );
 			
 	}
 
@@ -141,6 +146,7 @@ public class EventIteratorGMATest {
 		
 		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
 		eventIteratorGMA.moveNext();
+		eventIteratorGMA.moveNext();
 		
 		eventIteratorGMA.remove();
 	}
@@ -149,26 +155,14 @@ public class EventIteratorGMATest {
 	public void remove_sucesso_() {
 		List<Event> lstEvent=new ArrayList<>(); 
 		lstEvent.add( new Event("EVE-ADD",196701L));
-		lstEvent.add( new Event("EVE-ADD",196702L));
-		lstEvent.add( new Event("EVE-ADD",196703L));
-		System.out.println("SIZE===>"+lstEvent.size());
-		
+				
+			
 		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
 		eventIteratorGMA.moveNext();
 		eventIteratorGMA.remove();
-		while(eventIteratorGMA.moveNext()) {
-			
-			System.out.println("===>"+eventIteratorGMA.current().timestamp());
-		}
-		System.out.println("===>"+eventIteratorGMA.current().timestamp());
-		System.out.println("---------------------------------------------");
-		System.out.println("SIZE===>"+lstEvent.size());
-		eventIteratorGMA= new EventIteratorGMA(lstEvent.iterator());
-		while(eventIteratorGMA.moveNext()) {
-			
-			System.out.println("===>"+eventIteratorGMA.current().timestamp());
-		}
-		System.out.println("===>"+eventIteratorGMA.current().timestamp());
+		
+		assertTrue(lstEvent.size()==0);
+
 		
 	}
 }

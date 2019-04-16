@@ -25,7 +25,7 @@ public class EventIteratorGMA implements EventIterator {
 
 		if (eventIterator.hasNext()) {
 			currentEvent = eventIterator.next();
-			return eventIterator.hasNext();
+			return true;
 		}
 		else
 		{
@@ -49,8 +49,8 @@ public class EventIteratorGMA implements EventIterator {
 
 	@Override
 	public void remove() {
-		
-		if(( currentEvent==null) || (!eventIterator.hasNext())) {
+		//if(( currentEvent==null) || (!eventIterator.hasNext())) {
+		if(  currentEvent==null) {
 			throw new IllegalStateException();
 		}
 		
