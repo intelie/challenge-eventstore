@@ -36,8 +36,12 @@ public class EventStoreGMA implements  EventStore{
 		{
 			//TODO verificar duplicidade chave
 			htEvento.get(eventType).add(event);
+			
+		 
+			
 		}else
 		{
+			 
 			List<Event> lst=new ArrayList<Event>();
 			lst.add(event);
 			htEvento.put(eventType,lst);
@@ -63,12 +67,13 @@ public class EventStoreGMA implements  EventStore{
 		List<Event> lstEvent=htEvento.get(type);
 		//List<String> deDupStringList = new ArrayList<>(new HashSet<>(strList));
 		
-		Iterator<Event> it= lstEvent.stream().filter(e->{ 
-			return (e.timestamp()>=startTime && (e.timestamp()<endTime));
-			
-		}).sorted((p1, p2)-> (p1.timestamp()<=p2.timestamp())? -1:1)
-	    	.distinct()
-			.collect(Collectors.toList()).iterator();
+		Iterator<Event> it= lstEvent
+				.stream()
+				.filter(e->{ return (e.timestamp()>=startTime && (e.timestamp()<endTime));})
+				.distinct()
+			 	.sorted((p1, p2)-> (p1.timestamp()<=p2.timestamp())? -1:1)
+				.collect(Collectors.toList())
+				.iterator();
 				 
 		
 		return   new EventIteratorGMA(it);
