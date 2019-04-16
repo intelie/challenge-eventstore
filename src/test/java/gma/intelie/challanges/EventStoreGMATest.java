@@ -1,9 +1,9 @@
 package gma.intelie.challanges;
 
-import static org.junit.Assert.assertEquals;
+ 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
+ 
 import org.junit.Test;
 
 import net.intelie.challenges.Event;
@@ -24,7 +24,7 @@ public class EventStoreGMATest {
 		eventStoreGMA.insert(new Event("EV_ADD",120L));
 		eventStoreGMA.insert(new Event("EV_ADD",130L));
 		
-		EventIterator ei=eventStoreGMA.query("EV_ADD", 100L, 120L);
+		EventIterator ei=eventStoreGMA.query("EV_ADD", 100L, 121L);
 		
 		int tt=0;
 		while(ei.moveNext()) {
