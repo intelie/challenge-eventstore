@@ -14,11 +14,8 @@ import net.intelie.challenges.Event;
 import net.intelie.challenges.EventIterator;
 import net.intelie.challenges.EventStore;
 
-//Set<String> s = new LinkedHashSet<>(list);
-//List<String> deduped = list.stream().distinct().collect(Collectors.toList());
+
 public class EventStoreGMA implements  EventStore{
-	
-	private List<Event> lstEvent;
 	 
 	private Hashtable<String, List<Event>> htEvento;
 	
@@ -29,16 +26,16 @@ public class EventStoreGMA implements  EventStore{
 	}
 
 	@Override
-	public void insert(Event event) {
+	public synchronized void insert(Event event) {
 		
 		String eventType=event.type();
 		if(htEvento.containsKey(eventType))
 		{
+			if(!htEvento.get(eventType).contains(event)) {
+				htEvento.get(eventType).add(event);	
+			}
 			//TODO verificar duplicidade chave
-			htEvento.get(eventType).add(event);
-			
-		 
-			
+				
 		}else
 		{
 			 
@@ -52,7 +49,7 @@ public class EventStoreGMA implements  EventStore{
 	}
 
 	@Override
-	public void removeAll(String type) {
+	public synchronized void removeAll(String type) {
 		htEvento.remove(type);
 		
 	}
@@ -65,12 +62,12 @@ public class EventStoreGMA implements  EventStore{
 		}
 		
 		List<Event> lstEvent=htEvento.get(type);
-		//List<String> deDupStringList = new ArrayList<>(new HashSet<>(strList));
+	
 		
 		Iterator<Event> it= lstEvent
 				.stream()
 				.filter(e->{ return (e.timestamp()>=startTime && (e.timestamp()<endTime));})
-				.distinct()
+				//.distinct()
 			 	.sorted((p1, p2)-> (p1.timestamp()<=p2.timestamp())? -1:1)
 				.collect(Collectors.toList())
 				.iterator();
