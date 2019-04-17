@@ -24,7 +24,7 @@ public class EventIteratorGMATest {
 		List<Event> lstEvent = new ArrayList<>();
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 1L));
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent, new Object());
 
 		eventIterator.moveNext();
 
@@ -36,7 +36,7 @@ public class EventIteratorGMATest {
 	public void moveNext_emptyList_returnFalse() {
 		List<Event> lstEvent = new ArrayList<>();
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 
 		assertFalse(eventIterator.moveNext());
 	}
@@ -48,7 +48,7 @@ public class EventIteratorGMATest {
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 2L));
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 3L));
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 
 		assertTrue(eventIterator.moveNext());
 		assertTrue(eventIterator.moveNext());
@@ -62,7 +62,7 @@ public class EventIteratorGMATest {
 		List<Event> lstEvent = new ArrayList<>();
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 1L));
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 
 		Event e = eventIterator.current();
 
@@ -73,7 +73,7 @@ public class EventIteratorGMATest {
 
 		List<Event> lstEvent = new ArrayList<>();
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 
 		Event e = eventIterator.current();
 
@@ -84,7 +84,7 @@ public class EventIteratorGMATest {
 		List<Event> lstEvent = new ArrayList<>();
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 196701L));
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 
 		eventIterator.moveNext();
 		eventIterator.current();
@@ -104,7 +104,7 @@ public class EventIteratorGMATest {
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 196702L));
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 196703L));
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 
 		hasNext = eventIterator.moveNext();
 		assertTrue((eventIterator.current().timestamp() == 196701L) && (hasNext));
@@ -124,7 +124,7 @@ public class EventIteratorGMATest {
 	public void remove_notCallNext_returnIllegalStateException() {
 		List<Event> lstEvent = new ArrayList<>();
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 
 		eventIterator.remove();
 	}
@@ -134,7 +134,7 @@ public class EventIteratorGMATest {
 		List<Event> lstEvent = new ArrayList<>();
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 196701L));
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 		eventIterator.moveNext();
 		eventIterator.moveNext();
 
@@ -146,7 +146,7 @@ public class EventIteratorGMATest {
 		List<Event> lstEvent = new ArrayList<>();
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 196701L));
 
-		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent);
+		eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object());
 		eventIterator.moveNext();
 		eventIterator.remove();
 
@@ -162,7 +162,7 @@ public class EventIteratorGMATest {
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 196702L));
 		lstEvent.add(new Event(EVENT_TYPE_ADD, 1967031L));
 
-		try (EventIterator eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent)) {
+		try (EventIterator eventIterator = EventIteratorGMA.create(lstEvent.iterator(),lstEvent,new Object())) {
 
 			eventIterator.moveNext();
 

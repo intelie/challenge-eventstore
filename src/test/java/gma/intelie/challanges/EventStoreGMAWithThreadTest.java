@@ -13,100 +13,81 @@ import net.intelie.challenges.EventStore;
 public class EventStoreGMAWithThreadTest {
 	
 	private final String EVENT_TYPE_ADD="E_ADD";
-	private final String EVENT_TYPE_DIV="E_DIV";
-	
-	
 	 
-	public void GMA_AAA() {
-		List<String> lstStr=new ArrayList<>();
-		
-		lstStr.add("11111");
-		lstStr.add("22222");
-		lstStr.add("33333");
-		
-		Iterator it1= lstStr.iterator();
-		
-	//	lstStr.add("44444");
-	//	lstStr.add("55555");
-	//	lstStr.add("66666");
-		
-		Iterator it2= lstStr.iterator();
-		
-		while(it1.hasNext()) {
-			String x=(String) it1.next();
-			System.out.println("-------->"+x);
-		}
-		
-		
-		
-	}
-	
-	
-	public void GMA() {
-		EventStore eventStore = EventStoreGMA.create();
-		eventStore.insert(new Event(EVENT_TYPE_ADD, 100L));
-		eventStore.insert(new Event(EVENT_TYPE_ADD, 110L));
-		eventStore.insert(new Event(EVENT_TYPE_ADD, 120L));
-		
-	 	EventIterator evIt1=eventStore.query(EVENT_TYPE_ADD,10L, 400L);
-	
-	 	eventStore.insert(new Event(EVENT_TYPE_ADD, 140L));
-		eventStore.insert(new Event(EVENT_TYPE_ADD, 151L));
-		eventStore.insert(new Event(EVENT_TYPE_ADD, 130L));
-		eventStore.insert(new Event(EVENT_TYPE_ADD, 150L));
-	
-		 
-		EventIterator evIt2=eventStore.query(EVENT_TYPE_ADD,10L, 400L);
-		
-		System.out.println("--- EV-1 -------------------------------------");
-		while(evIt1.moveNext()) {
-			System.out.println("--->"+evIt1.current().timestamp());
-			
-		//	evIt1.remove();
-			
-		}
-		
-		
-		
-		//EventIterator evIt2=eventStore.query(EVENT_TYPE_ADD,10L, 400L);
-		System.out.println("--- EV-2 -------------------------------------");
-		while(evIt2.moveNext()) {
-			System.out.println("--->"+evIt2.current().timestamp());
-		 
-		}
-		
-		
-		EventIterator evIt3=eventStore.query(EVENT_TYPE_ADD,10L, 400L);
-		System.out.println("--- EV-3 -------------------------------------");
-		while(evIt3.moveNext()) {
-			System.out.println("--->"+evIt3.current().timestamp());
-		 
-		}
-		
-	}
+
+	//	that's all folks
+	//:<
 	
 
 	@Test
-	public void linha() throws InterruptedException {
+	public void crazy() throws InterruptedException {
 
 		EventStore eventStore = EventStoreGMA.create();
 		
-		Thread t1=new Thread(()->{addItem(10,1000,eventStore);}) ;
-		Thread t2=new Thread(()->{addItem(100,500,eventStore);}) ;
-		Thread t3=new Thread(()->{showItem(2000,eventStore);}) ;
-		t1.start();
-		t2.start();
-		t3.start();
+		Thread t1Add=new Thread(()->{addItem(10,1000,eventStore);}) ;
+		Thread t2Add=new Thread(()->{addItem(100,500,eventStore);}) ;
+		Thread t3Add=new Thread(()->{addItem(300,800,eventStore);}) ;
+		Thread t4Add=new Thread(()->{addItem(400,1500,eventStore);}) ;
+		Thread t3Show=new Thread(()->{showItem(800,eventStore);}) ;
+		Thread t4Del=new Thread(()->{removeItem(2000,eventStore);}) ;
+		Thread t5Del=new Thread(()->{removeItem(2000,eventStore);}) ;
+		Thread t6RemoveAll=new Thread(()->{removeAll(950,eventStore);}) ;
 		
+		t1Add.start();
+		t2Add.start();
+		t3Add.start();
+		t4Add.start();
+		
+		t3Show.start();
+		t4Del.start();
+		t5Del.start();
+		t6RemoveAll.start();
 				
-		Thread.sleep(20000);
+		 Thread.sleep(200);
 		
-		 
+		System.out.println("FIMMMM:");
 		
-		 
+		EventIterator evIt=eventStore.query(EVENT_TYPE_ADD,10L, 4000L);
+		System.out.println("FIMMMM");
+		while(evIt.moveNext()) {
+			System.out.println("show item---------->"+evIt.current().timestamp());
+			
+		}	
 		
-		 
-
+	}
+	
+	private void removeAll(int pausa,EventStore eventStore) {
+		while(true) {
+			EventIterator evIt=eventStore.query(EVENT_TYPE_ADD,10L, 4000L);
+			System.out.println("*************Acordou remove all");
+			
+			eventStore.removeAll(EVENT_TYPE_ADD);
+			try {
+				 
+				Thread.sleep(pausa);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	private void removeItem(int pausa,EventStore eventStore) {
+		while(true) {
+			EventIterator evIt=eventStore.query(EVENT_TYPE_ADD,10L, 4000L);
+			System.out.println("Acordou del item");
+			while(evIt.moveNext()) {
+				 evIt.remove();
+				
+			}	
+			try {
+				 
+				Thread.sleep(pausa);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void showItem(int pausa,EventStore eventStore) {
@@ -151,39 +132,5 @@ public class EventStoreGMAWithThreadTest {
 
 	}
 
-	private Thread createThread_delete(int pausa, EventStore eventStore) {
-
-		Thread t1 = new Thread(() -> {
-
-			EventIterator ei1 = eventStore.query("EV_ADD", 10L, 400L);
-			while (ei1.moveNext()) {
-
-				System.out.println(
-						"Acordou e deleta: " + Thread.currentThread().getId() + " " + ei1.current().timestamp());
-				ei1.remove();
-				try {
-					Thread.sleep(pausa);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-
-		});
-		// t1.setDaemon(true);
-
-		return t1;
-	}
-
-	private int getTotItem(EventIterator eventIte) {
-
-		int tt = 0;
-		while (eventIte.moveNext()) {
-			tt++;
-		}
-
-		return tt;
-	}
-
+	 
 }

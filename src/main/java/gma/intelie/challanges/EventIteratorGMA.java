@@ -11,17 +11,18 @@ public class EventIteratorGMA implements EventIterator {
 	private Iterator<Event> itEvento;
 	private List<Event> lstEvent;
 	private Event currentEvent;
-	
+	private Object lock;
 
-	private EventIteratorGMA(Iterator<Event> itEvento,List<Event> lstEvent ) {
-		 
+	private EventIteratorGMA(Iterator<Event> itEvento, List<Event> lstEvent, Object lock) {
+
 		this.itEvento = itEvento;
-		this.lstEvent=lstEvent ;
+		this.lstEvent = lstEvent;
+		this.lock = lock;
 	}
-	
-	public static EventIterator create(Iterator<Event> itEvento,List<Event> lstEvent ) {
-	
-		return new EventIteratorGMA(itEvento,lstEvent );
+
+	public static EventIterator create(Iterator<Event> itEvento, List<Event> lstEvent, Object lock) {
+
+		return new EventIteratorGMA(itEvento, lstEvent, lock);
 	}
 
 	@Override
@@ -33,19 +34,21 @@ public class EventIteratorGMA implements EventIterator {
 	@Override
 	public boolean moveNext() {
 
-		if (itEvento.hasNext()) {
-			currentEvent = itEvento.next();
-			return true;
-		} else {
-			currentEvent = null;
-			return false;
+		synchronized (lock) {
+			if (itEvento.hasNext()) {
+				currentEvent = itEvento.next();
+				return true;
+			} else {
+				currentEvent = null;
+				return false;
+			}
 		}
-
 	}
 
 	@Override
 	public Event current() {
 
+		
 		if (currentEvent == null) {
 			throw new IllegalStateException();
 		}
@@ -54,16 +57,16 @@ public class EventIteratorGMA implements EventIterator {
 	}
 
 	@Override
-	public  void remove() {
+	public void remove() {
 		// TODO ajustar
 
 		if (currentEvent == null) {
 			throw new IllegalStateException();
 		}
-
-	//	itEvento.remove();
-		lstEvent.remove(currentEvent);
-		 
+		synchronized (lock) {
+			// itEvento.remove();
+			lstEvent.remove(currentEvent);
+		}
 	}
 
 }
