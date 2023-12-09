@@ -162,9 +162,8 @@ class EventIterator:
             raise StopIteration("Iterator has ended.")
 
     def remove(self):
-        # Removing elements from an iterator is not directly supported in Python,
-        # so you may need to modify the underlying list if removal is necessary.
-        raise NotImplementedError("Remove operation is not supported in Python iterators.")
+        pass
+
 
 class CustomIterator:
     def __init__(self, events):
