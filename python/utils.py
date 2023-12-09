@@ -139,7 +139,7 @@ class EventIterator:
     """
     def __init__(self, events):
         self.events = events
-        self.iterator = iter(events)
+        self.iterator = CustomIterator(events)
         self.has_moved = False
 
     def move_next(self):
